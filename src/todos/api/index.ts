@@ -4,7 +4,6 @@ import {http} from "@/shared/http";
 
 export const todoListQueryParamsSchema = z.object({
   ...defaultListParams,
-  search: z.string().optional(),
   userId: z.coerce.number({ message: "Invalid user id" }).optional(),
 });
 
@@ -19,9 +18,10 @@ export type Todo = z.infer<typeof todoSchema>;
 
 export type TodoListQueryParams = z.infer<typeof todoListQueryParamsSchema>;
 
-export async function getTodos(queryParams: TodoListQueryParams) {
+export async function getTodos({signal, ...queryParams}: TodoListQueryParams & {signal?: AbortSignal}) {
   const {data} = await http.get<Todo[]>("/todos", {
     params: queryParams,
+    signal
   });
   return todoSchema.array().parse(data);
 }

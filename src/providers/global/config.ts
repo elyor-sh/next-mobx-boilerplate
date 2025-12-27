@@ -16,4 +16,6 @@ export class Globals {
 
 export const GlobalsContext = createContext<Globals | undefined>(undefined)
 
+export type GlobalsContextType = Globals
+
 export const useGlobalsContext = createUseStore(GlobalsContext)

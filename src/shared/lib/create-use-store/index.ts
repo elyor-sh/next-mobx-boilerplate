@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { autorun, observable, runInAction } from "mobx";
+import { observable, runInAction } from "mobx";
 import type { Context } from "react";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -113,17 +113,4 @@ export function createUseStore<TContext>(
   }
 
   return useStore;
-}
-
-export function appendAutoRun<C extends ViewModelConstructor<any>>(
-  ctx: C,
-  ...fns: Array<() => void>
-) {
-  if (!ctx.disposers) {
-    ctx.disposers = [];
-  }
-  fns.forEach((fn) => {
-    const disposer = autorun(fn);
-    ctx.disposers?.push(disposer);
-  });
 }

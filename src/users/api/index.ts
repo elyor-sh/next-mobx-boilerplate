@@ -27,7 +27,7 @@ export const usersSchema = z.object({
 
 export type Users = z.infer<typeof usersSchema>;
 
-export async function getUsers () {
-  const {data} = await http.get<Users[]>("/users");
+export async function getUsers ({signal}: {signal?: AbortSignal}) {
+  const {data} = await http.get<Users[]>("/users", {signal});
   return usersSchema.array().parse(data);
 }
