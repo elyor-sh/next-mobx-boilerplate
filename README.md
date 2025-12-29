@@ -73,8 +73,39 @@ The `shared/lib` folder contains essential utilities that power the MVVM archite
 Creates a custom hook for accessing ViewModels with lifecycle management.
 
 ```typescript
-// Usage in components
-const { vm } = useTodosPageModuleContext(TodoListVM);
+// Step 1: Create context and hook
+import { createContext } from "react";
+import { createUseStore } from "@/shared/lib/create-use-store";
+
+export const TodosPageModuleContext = createContext<
+  TodosPageModule | undefined
+>(undefined);
+
+export const useTodosPageModuleContext = createUseStore(TodosPageModuleContext);
+
+// Step 2: Use in components without ViewModel (access context only)
+const { context } = useTodosPageModuleContext();
+
+// Step 3: Use with ViewModel
+const { vm, context } = useTodosPageModuleContext(TodoListVM);
+
+// Step 4: Use with ViewModel that requires props
+export class ItemVM implements ViewModelConstructor<GlobalsContextType> {
+  constructor(
+    public context: GlobalsContextType,
+    public props: { itemId: number; mode: string },
+  ) {
+    makeViewModel(this);
+  }
+
+  get item() {
+    return this.context.items.find((i) => i.id === this.props.itemId);
+  }
+}
+
+// In component
+const { vm } = useGlobalsContext(ItemVM, { itemId: 123, mode: "edit" });
+// Props are observable and reactive
 ```
 
 **Features:**
@@ -83,6 +114,8 @@ const { vm } = useTodosPageModuleContext(TodoListVM);
 - Lifecycle hooks: `beforeMount`, `afterMount`, `beforeUnmount`
 - Automatic cleanup of disposers (autoruns, reactions)
 - Context injection
+- Optional props support with reactive updates
+- Type-safe context and ViewModel access
 
 ### 2. **`makeViewModel`**
 
