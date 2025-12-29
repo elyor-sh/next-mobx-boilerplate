@@ -31,6 +31,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        if (user.passwordHash !== credentials.password) {
+          return null;
+        }
+
         return {
           id: user.id.toString(),
           email: user.email,
