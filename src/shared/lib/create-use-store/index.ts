@@ -1,8 +1,9 @@
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { observable, runInAction } from "mobx";
 import type { Context } from "react";
+
+import { observable, runInAction } from "mobx";
 import { useContext, useEffect, useRef, useState } from "react";
 
 export interface ViewModelConstructor<TContext> {

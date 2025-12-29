@@ -1,14 +1,20 @@
 "use client";
 
-import {useParams, usePathname, useRouter, useSearchParams} from "next/navigation";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
   AppRouterInstance,
   NavigateOptions,
-  PrefetchOptions
+  PrefetchOptions,
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import {makeAutoObservable, observable, runInAction} from "mobx";
-import {useEffect, useState} from "react";
-import {stringifyQueryParams} from "@/shared/lib/query-params";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { stringifyQueryParams } from "@/shared/lib/query-params";
 
 export type ParamValue = string | Array<string> | undefined;
 export type Params = Record<string, ParamValue>;
@@ -32,13 +38,15 @@ export class AppRouter {
     this.queryParams = props.queryParams;
     this.router = props.router;
 
-    makeAutoObservable(this, undefined, {autoBind: true});
+    makeAutoObservable(this, undefined, { autoBind: true });
   }
 
-  setQueryParams(queryParams: Partial<Record<string, string | number | undefined | null>>) {
-      const pathname = `${this.pathname}?${stringifyQueryParams(queryParams)}`
-      window.history.pushState({}, "", pathname)
-      this.queryParams = {...this.queryParams, ...queryParams};
+  setQueryParams(
+    queryParams: Partial<Record<string, string | number | undefined | null>>,
+  ) {
+    const pathname = `${this.pathname}?${stringifyQueryParams(queryParams)}`;
+    window.history.pushState({}, "", pathname);
+    this.queryParams = { ...this.queryParams, ...queryParams };
   }
 
   push(path: string, options?: NavigateOptions) {
@@ -84,15 +92,14 @@ export const useInitRouter = () => {
   useEffect(() => {
     runInAction(() => {
       appRouter.pathname = pathname;
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
 
   useEffect(() => {
     runInAction(() => {
       appRouter.params = observable(slug);
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 

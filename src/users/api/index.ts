@@ -1,5 +1,6 @@
-import {http} from "@/shared/http";
-import {z} from "zod";
+import { z } from "zod";
+
+import { http } from "@/shared/http";
 
 export const usersSchema = z.object({
   id: z.number(),
@@ -27,7 +28,7 @@ export const usersSchema = z.object({
 
 export type Users = z.infer<typeof usersSchema>;
 
-export async function getUsers ({signal}: {signal?: AbortSignal}) {
-  const {data} = await http.get<Users[]>("/users", {signal});
+export async function getUsers({ signal }: { signal?: AbortSignal }) {
+  const { data } = await http.get<Users[]>("/users", { signal });
   return usersSchema.array().parse(data);
 }

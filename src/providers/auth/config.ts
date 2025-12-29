@@ -1,11 +1,12 @@
-import {UserSession} from "@/shared/lib/auth";
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
+
+import { UserSession } from "@/shared/lib/auth";
 
 export class Session {
   user: UserSession | null;
 
   constructor(user: UserSession | null) {
     this.user = user;
-    makeAutoObservable(this, undefined, {autoBind: true})
+    makeAutoObservable(this, undefined, { autoBind: true });
   }
 }

@@ -1,11 +1,12 @@
 "use client";
 
-import {observer} from "mobx-react-lite";
-import {useGlobalsContext} from "@/providers/global/config";
-import {LoginVM} from "@/session/login/view-model";
+import { observer } from "mobx-react-lite";
+
+import { useGlobalsContext } from "@/providers/global/config";
+import { LoginVM } from "@/session/login/view-model";
 
 export const Login = observer(() => {
-  const {vm} = useGlobalsContext(LoginVM)
+  const { vm } = useGlobalsContext(LoginVM);
 
   return (
     <form
@@ -50,6 +51,6 @@ export const Login = observer(() => {
       </button>
     </form>
   );
-})
+});
 
 Login.displayName = "Login";

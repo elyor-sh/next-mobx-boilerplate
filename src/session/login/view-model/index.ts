@@ -1,11 +1,12 @@
-import {ViewModelConstructor} from "@/shared/lib/create-use-store";
-import {GlobalsContextType} from "@/providers/global/config";
-import {makeViewModel} from "@/shared/lib/make-view-model";
-import {createForm, createFormState} from "@/shared/lib/form-builder";
-import {loginSchema} from "@/session/login/api";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {createEffect} from "@/shared/lib/create-effect";
-import {getSession, signIn} from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getSession, signIn } from "next-auth/react";
+
+import { GlobalsContextType } from "@/providers/global/config";
+import { loginSchema } from "@/session/login/api";
+import { createEffect } from "@/shared/lib/create-effect";
+import { ViewModelConstructor } from "@/shared/lib/create-use-store";
+import { createForm, createFormState } from "@/shared/lib/form-builder";
+import { makeViewModel } from "@/shared/lib/make-view-model";
 
 export class LoginVM implements ViewModelConstructor<GlobalsContextType> {
   form = createForm({
@@ -20,7 +21,7 @@ export class LoginVM implements ViewModelConstructor<GlobalsContextType> {
   private state = createFormState(this, this.form.control);
 
   constructor(public context: GlobalsContextType) {
-    makeViewModel(this)
+    makeViewModel(this);
   }
 
   get formState() {
@@ -28,20 +29,20 @@ export class LoginVM implements ViewModelConstructor<GlobalsContextType> {
   }
 
   login = createEffect(async () => {
-    const fields = this.form.getValues()
+    const fields = this.form.getValues();
     const result = await signIn("credentials", {
       email: fields.email,
       password: fields.password,
       redirect: false,
-    })
+    });
 
-    if(result?.error){
-      alert(result.error)
-      return
+    if (result?.error) {
+      alert(result.error);
+      return;
     }
 
-    await getSession()
+    await getSession();
 
-    this.context.appRouter.replace("/")
-  })
+    this.context.appRouter.replace("/");
+  });
 }

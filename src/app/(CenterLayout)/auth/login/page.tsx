@@ -1,6 +1,7 @@
-import React from 'react';
-import {Login} from "@/session/login/ui";
+import React from "react";
 
-export default function LoginPage ()  {
+import { Login } from "@/session/login/ui";
+
+export default function LoginPage() {
   return <Login />;
-};
+}

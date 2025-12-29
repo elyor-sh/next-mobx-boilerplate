@@ -3,38 +3,38 @@ import { observable, runInAction } from "mobx";
 
 type State =
   | {
-  loading: true;
-  error: null;
-  fulfilled: false;
-}
+      loading: true;
+      error: null;
+      fulfilled: false;
+    }
   | {
-  loading: false;
-  error: null;
-  fulfilled: true;
-}
+      loading: false;
+      error: null;
+      fulfilled: true;
+    }
   | {
-  loading: false;
-  error: NonNullable<unknown>;
-  fulfilled: false;
-};
+      loading: false;
+      error: NonNullable<unknown>;
+      fulfilled: false;
+    };
 
 export const WITH_ASYNC_STATE_MARK = "__WITH_ASYNC_STATE__";
 
 type EffectState<Req, Res> = Req extends void
   ? {
-    (): Promise<Res>;
-    state: State;
-    abortController?: AbortController;
-    // PRIVATE: DON'T USE THIS PROPERTY
-    __withAsyncState__: "__WITH_ASYNC_STATE__";
-  }
+      (): Promise<Res>;
+      state: State;
+      abortController?: AbortController;
+      // PRIVATE: DON'T USE THIS PROPERTY
+      __withAsyncState__: "__WITH_ASYNC_STATE__";
+    }
   : {
-    (params: Req): Promise<Res>;
-    state: State;
-    abortController?: AbortController;
-    // PRIVATE: DON'T USE THIS PROPERTY
-    __withAsyncState__: "__WITH_ASYNC_STATE__";
-  };
+      (params: Req): Promise<Res>;
+      state: State;
+      abortController?: AbortController;
+      // PRIVATE: DON'T USE THIS PROPERTY
+      __withAsyncState__: "__WITH_ASYNC_STATE__";
+    };
 
 export type ParamsWithSignal<Req> = { signal: AbortSignal } & Req;
 
@@ -45,7 +45,6 @@ export function createEffect<Res>(
 export function createEffect<Req extends object, Res>(
   fn: ({ signal, ...params }: { signal: AbortSignal } & Req) => Promise<Res>,
 ): EffectState<Req, Res>;
-
 
 export function createEffect<Req extends object | void = void, Res = unknown>(
   fn: (

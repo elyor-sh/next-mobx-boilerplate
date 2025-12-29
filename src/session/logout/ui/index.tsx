@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
-import {observer} from "mobx-react-lite";
-import {useGlobalsContext} from "@/providers/global/config";
-import {LogoutVM} from "@/session/logout/view-model";
+import { observer } from "mobx-react-lite";
+import React from "react";
+
+import { useGlobalsContext } from "@/providers/global/config";
+import { LogoutVM } from "@/session/logout/view-model";
 
 export const Logout = observer(() => {
-  const {vm} = useGlobalsContext(LogoutVM)
+  const { vm } = useGlobalsContext(LogoutVM);
   return (
     <button
       disabled={vm.logout.state.loading}
@@ -18,6 +19,6 @@ export const Logout = observer(() => {
       {"--->"}
     </button>
   );
-})
+});
 
 Logout.displayName = "Logout";

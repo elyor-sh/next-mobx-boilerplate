@@ -1,18 +1,15 @@
 "use client";
 
-import {GlobalsContext, useInitGlobals} from "@/providers/global/config";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+
+import { GlobalsContext, useInitGlobals } from "@/providers/global/config";
 
 type Props = {
   children: ReactNode;
-}
+};
 
-export const GlobalProvider = ({children}: Props) => {
-  const globals = useInitGlobals()
+export const GlobalProvider = ({ children }: Props) => {
+  const globals = useInitGlobals();
 
-  return (
-    <GlobalsContext value={globals}>
-      {children}
-    </GlobalsContext>
-  );
-}
+  return <GlobalsContext value={globals}>{children}</GlobalsContext>;
+};

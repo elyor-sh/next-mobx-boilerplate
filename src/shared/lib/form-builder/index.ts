@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { makeAutoObservable, runInAction } from "mobx";
 import {
   type Control,
   createFormControl,
   type FieldValues,
   type UseFormProps,
 } from "react-hook-form";
-import { makeAutoObservable, runInAction } from "mobx";
-import {ViewModelConstructor} from "@/shared/lib/create-use-store";
+
+import { ViewModelConstructor } from "@/shared/lib/create-use-store";
 
 export const FORM_CONTROLLER = "__FORM_CONTROLLER__";
 

@@ -1,6 +1,7 @@
-import {defaultListParams} from "@/shared/constants/default-params";
-import {z} from "zod";
-import {http} from "@/shared/http";
+import { z } from "zod";
+
+import { defaultListParams } from "@/shared/constants/default-params";
+import { http } from "@/shared/http";
 
 export const todoListQueryParamsSchema = z.object({
   ...defaultListParams,
@@ -18,10 +19,13 @@ export type Todo = z.infer<typeof todoSchema>;
 
 export type TodoListQueryParams = z.infer<typeof todoListQueryParamsSchema>;
 
-export async function getTodos({signal, ...queryParams}: TodoListQueryParams & {signal?: AbortSignal}) {
-  const {data} = await http.get<Todo[]>("/todos", {
+export async function getTodos({
+  signal,
+  ...queryParams
+}: TodoListQueryParams & { signal?: AbortSignal }) {
+  const { data } = await http.get<Todo[]>("/todos", {
     params: queryParams,
-    signal
+    signal,
   });
   return todoSchema.array().parse(data);
 }

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { type AnnotationsMap, makeAutoObservable } from "mobx";
 import type { CreateObservableOptions } from "mobx/src/internal.ts";
-import {WITH_ASYNC_STATE_MARK} from "@/shared/lib/create-effect";
-import {FORM_CONTROLLER} from "@/shared/lib/form-builder";
+
+import { type AnnotationsMap, makeAutoObservable } from "mobx";
+
+import { WITH_ASYNC_STATE_MARK } from "@/shared/lib/create-effect";
+import { FORM_CONTROLLER } from "@/shared/lib/form-builder";
 
 type MakeObservableOptions = Omit<CreateObservableOptions, "proxy">;
 
