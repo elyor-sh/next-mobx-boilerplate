@@ -6,8 +6,8 @@ import {
   NavigateOptions,
   PrefetchOptions
 } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import {makeAutoObservable} from "mobx";
-import {useState} from "react";
+import {makeAutoObservable, observable, runInAction} from "mobx";
+import {useEffect, useState} from "react";
 import {stringifyQueryParams} from "@/shared/lib/query-params";
 
 export type ParamValue = string | Array<string> | undefined;
@@ -81,24 +81,20 @@ export const useInitRouter = () => {
     });
   });
 
-  // useEffect(() => {
-  //   appRouter.setQueryParams(Object.fromEntries(searchParams.entries()));
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [searchParams]);
-  //
-  // useEffect(() => {
-  //   runInAction(() => {
-  //     appRouter.pathname = pathname;
-  //   })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pathname]);
-  //
-  // useEffect(() => {
-  //   runInAction(() => {
-  //     appRouter.params = slug;
-  //   })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [slug]);
+  useEffect(() => {
+    runInAction(() => {
+      appRouter.pathname = pathname;
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+
+  useEffect(() => {
+    runInAction(() => {
+      appRouter.params = observable(slug);
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   return appRouter;
 };

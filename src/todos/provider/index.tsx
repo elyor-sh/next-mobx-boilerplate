@@ -15,8 +15,7 @@ type Props = {
 export const TodosProvider = observer(({children, initialTodos}: Props) => {
     const {context} = useGlobalsContext()
     const [queryParams] = useState(() => {
-        const parsedQueryParams = todoListQueryParamsSchema.parse(context.appRouter.queryParams)
-        return new ValidatedQueryParams(parsedQueryParams, context.appRouter.setQueryParams)
+        return new ValidatedQueryParams(context.appRouter.queryParams, context.appRouter.setQueryParams, todoListQueryParamsSchema)
     })
     const [todosPageModule] = useState(() => new TodosPageModule(initialTodos, queryParams))
 
