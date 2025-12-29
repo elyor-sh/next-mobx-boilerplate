@@ -24,3 +24,5 @@ export const UsersList = observer(() => {
     </ul>
   );
 })
+
+UsersList.displayName = "UsersList";

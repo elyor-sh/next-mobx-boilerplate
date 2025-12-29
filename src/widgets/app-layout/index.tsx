@@ -38,3 +38,5 @@ export const AppLayout = observer(({children}: Props) => {
     </div>
   )
 })
+
+AppLayout.displayName = "AppLayout";
