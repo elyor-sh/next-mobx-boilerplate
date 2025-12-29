@@ -1,1 +1,1 @@
-<h1>Next App Router + Mobx boilerplate</h1>
+<h1>Next App Router + Mobx EXAMPLE</h1>
