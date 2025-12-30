@@ -9,6 +9,7 @@ A production-ready boilerplate for building scalable web applications using **Ne
 - **[React Hook Form](https://react-hook-form.com/)** - Performant, flexible forms
 - **[Zod](https://zod.dev/)** - TypeScript-first schema validation
 - **[NextAuth.js](https://next-auth.js.org/)** - Authentication for Next.js
+- **[Jest](https://jestjs.io/)** - Testing Framework
 
 ## 🏗️ Architecture: MVVM Pattern
 
