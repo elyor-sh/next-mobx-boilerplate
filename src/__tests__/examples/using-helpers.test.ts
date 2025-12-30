@@ -143,7 +143,7 @@ describe("Examples: Using Test Helpers", () => {
   describe("Complex Example: Testing Effect with Helpers", () => {
     it("should test complete effect lifecycle", async () => {
       const mockFn = jest.fn(
-        async ({ value }: { value: number; signal: AbortSignal }) => {
+        async ({ value }: { value: number; signal?: AbortSignal }) => {
           await delay(20);
           return value * 2;
         },
