@@ -397,12 +397,24 @@ export const Login = observer(() => {
 
 ## 📝 Available Scripts
 
+### Development
+
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm start` - Start production server
+
+### Code Quality
+
 - `pnpm lint` - Run ESLint
 - `pnpm format` - Format code with Prettier
 - `pnpm typecheck` - Run TypeScript type checking
+
+### Testing
+
+- `pnpm test` - Run all tests
+- `pnpm test:watch` - Run tests in watch mode
+- `pnpm test:coverage` - Run tests with coverage report
+- `pnpm test:clear` - Clear Jest cache
 
 ## 🎯 Key Features
 
@@ -416,20 +428,194 @@ export const Login = observer(() => {
 - ✅ **Code Quality** - ESLint, Prettier, Husky, and lint-staged
 - ✅ **Modern Stack** - Next.js 16 App Router, React 19
 
-## 🧪 Testing Your ViewModels
+## 🧪 Testing
 
-Since business logic is completely separated from UI, ViewModels can be easily tested:
+This project includes a comprehensive test suite with **146 tests** across **18 test suites** covering all layers of the application.
+
+### Quick Start
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with coverage report
+pnpm test:coverage
+
+# Clear Jest cache
+pnpm test:clear
+```
+
+### Test Structure
+
+All tests are organized in `src/__tests__/` directory, mirroring the source code structure:
+
+```
+src/__tests__/
+├── todos/                      # Todos module tests
+│   ├── api/                   # API layer tests
+│   ├── model/                 # TodosModel tests
+│   ├── view-model/            # TodoListVM, TodoListFilterVM tests
+│   └── provider/              # TodosPageModule tests
+├── users/                      # Users module tests
+│   ├── api/                   # API layer tests
+│   ├── model/                 # UsersModel tests
+│   └── provider/              # UsersPageModule tests
+├── pickers/                    # Pickers tests
+│   └── user-select/           # UsersSelectVM tests
+├── shared/                     # Shared utilities tests
+│   ├── lib/                   # Core utilities tests
+│   │   ├── create-effect.test.ts
+│   │   ├── make-view-model.test.ts
+│   │   └── query-params.test.ts
+│   ├── constants/             # Constants tests
+│   └── http/                  # HTTP client tests
+├── providers/                  # Global providers tests
+│   ├── global/                # Globals tests
+│   └── auth/                  # Session tests
+├── integration/                # Integration tests
+│   └── todos-flow.test.ts     # Complete todos flow
+├── __mocks__/                  # Mock data and ES module mocks
+│   ├── data.ts                # Mock data factories
+│   ├── lodash-es.ts           # lodash-es mock for Jest
+│   └── query-string.ts        # query-string mock for Jest
+├── __helpers__/                # Test utilities
+│   └── test-utils.ts          # Helper functions
+└── examples/                   # Usage examples
+    └── using-helpers.test.ts  # How to use test helpers
+```
+
+### Why MVVM Makes Testing Easy
+
+Since business logic is completely separated from UI, ViewModels can be tested independently without rendering components:
 
 ```typescript
+import { TodoListVM } from "@/todos/view-model/TodoListVM";
+import { createMockContext } from "@/__tests__/__helpers__/test-utils";
+import { getTodos } from "@/todos/api";
+
+jest.mock("@/todos/api");
+
 describe("TodoListVM", () => {
-  it("should load todos", async () => {
+  it("should load todos successfully", async () => {
+    const mockContext = createMockContext();
     const vm = new TodoListVM(mockContext);
+
     await vm.loadTodos();
 
     expect(vm.loadTodos.state.fulfilled).toBe(true);
     expect(vm.context.todosModel.todoList).toHaveLength(10);
   });
+
+  it("should handle loading state", () => {
+    const vm = new TodoListVM(mockContext);
+
+    vm.loadTodos();
+
+    expect(vm.loadTodos.state.loading).toBe(true);
+  });
 });
+```
+
+### Test Coverage
+
+The test suite covers all architectural layers:
+
+#### **Models** (Data Layer)
+
+- `TodosModel` - Todo list state management
+- `UsersModel` - Users state management
+
+#### **ViewModels** (Business Logic Layer)
+
+- `TodoListVM` - Todo list operations and lifecycle
+- `TodoListFilterVM` - Query params and filtering
+- `UsersSelectVM` - User selection with async loading
+
+#### **API Layer**
+
+- Todos API with Zod schema validation
+- Users API with Zod schema validation
+- HTTP client error handling
+
+#### **Shared Utilities**
+
+- `createEffect` - Async operations with abort controller
+- `makeViewModel` - MobX ViewModel creation
+- `query-params` - URL query parameter utilities
+- `default-params` - Default pagination parameters
+
+#### **Providers**
+
+- `TodosPageModule` - Todos page context
+- `UsersPageModule` - Users page context
+- `Globals` - Global application state
+- `Session` - Authentication session
+
+#### **Integration Tests**
+
+- Complete todos flow (load → filter → cancel)
+- Request cancellation scenarios
+
+### Test Utilities
+
+The project includes helpful test utilities in `src/__tests__/__helpers__/test-utils.ts`:
+
+```typescript
+// Create mock context for testing ViewModels
+const mockContext = createMockContext();
+
+// Create mock todos with custom data
+const todos = createMockTodos(5);
+
+// Expect effect to be in fulfilled state
+expectFulfilledState(vm.loadTodos);
+
+// Expect effect to be in loading state
+expectLoadingState(vm.loadTodos);
+
+// Expect effect to be in error state
+expectErrorState(vm.loadTodos);
+```
+
+### ES Module Mocks
+
+The project handles ES modules (`lodash-es`, `query-string`) that Jest can't parse by default. Custom mocks are provided in `src/__tests__/__mocks__/`:
+
+- **`lodash-es.ts`** - Mock for `lodash-es` with `isEqual` implementation
+- **`query-string.ts`** - Mock for `query-string` using native `URLSearchParams`
+
+These mocks are automatically used via `moduleNameMapper` in `jest.config.js`.
+
+### Coverage Goals
+
+```javascript
+coverageThreshold: {
+  global: {
+    branches: 70,
+    functions: 70,
+    lines: 70,
+    statements: 70,
+  },
+}
+```
+
+### Running Specific Tests
+
+```bash
+# Run tests for a specific file
+pnpm test TodoListVM
+
+# Run tests in a specific directory
+pnpm test src/__tests__/todos
+
+# Run tests matching a pattern
+pnpm test --testNamePattern="should load"
+
+# Run tests with verbose output
+pnpm test --verbose
 ```
 
 ## 📚 Learn More
