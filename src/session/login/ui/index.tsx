@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 
 import { useGlobalsContext } from "@/providers/global/config";
 import { LoginVM } from "@/session/login/view-model";
+import { Error } from "@/shared/ui/error";
 
 export const Login = observer(() => {
   const { vm } = useGlobalsContext(LoginVM);
@@ -23,11 +24,7 @@ export const Login = observer(() => {
           {...vm.form.register("email")}
         />
       </label>
-      {vm.formState.errors.email && (
-        <p className="text-red-500 text-sm">
-          {vm.formState.errors.email.message}
-        </p>
-      )}
+      <Error error={vm.formState.errors.email} />
       <label className="block mt-3">
         <p>Password</p>
         <input
@@ -37,11 +34,7 @@ export const Login = observer(() => {
           {...vm.form.register("password")}
         />
       </label>
-      {vm.formState.errors.password && (
-        <p className="text-red-500 text-sm">
-          {vm.formState.errors.password.message}
-        </p>
-      )}
+      <Error error={vm.formState.errors.password} />
       <button
         disabled={vm.login.state.loading || vm.formState.isSubmitting}
         className="block mt-5 w-full bg-blue-500 text-white p-2 rounded-lg disabled:opacity-50"
