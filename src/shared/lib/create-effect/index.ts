@@ -25,15 +25,11 @@ type EffectState<Req, Res> = Req extends void
       (): Promise<Res>;
       state: State;
       abortController?: AbortController;
-      // PRIVATE: DON'T USE THIS PROPERTY
-      __withAsyncState__: "__WITH_ASYNC_STATE__";
     }
   : {
       (params: Req): Promise<Res>;
       state: State;
       abortController?: AbortController;
-      // PRIVATE: DON'T USE THIS PROPERTY
-      __withAsyncState__: "__WITH_ASYNC_STATE__";
     };
 
 export type ParamsWithSignal<Req> = { signal: AbortSignal } & Req;
@@ -101,7 +97,8 @@ export function createEffect<Req extends object | void = void, Res = unknown>(
 
   Wrapped.state = state as State;
   Wrapped.abortController = undefined;
-  // PRIVATE: DON'T USE THIS PROPERTY
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   Wrapped.__withAsyncState__ = WITH_ASYNC_STATE_MARK;
 
   return Wrapped;

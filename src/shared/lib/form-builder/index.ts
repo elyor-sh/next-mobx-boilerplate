@@ -18,9 +18,7 @@ export function createForm<T extends FieldValues>(config: UseFormProps<T>) {
   return {
     ...control,
     __formController__: FORM_CONTROLLER,
-  } as typeof control & {
-    __formController__: "__FORM_CONTROLLER__";
-  };
+  } as typeof control;
 }
 
 export class FormState<T extends FieldValues> {
